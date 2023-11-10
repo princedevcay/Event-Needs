@@ -1,0 +1,15 @@
+s html, body {
+    overflow-x: hidden;
+  }  
+
+  .slider-container {
+    height: 300px; 
+  }
+
+  .slider-image {
+    border-radius: 10px;
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+  }
+  
