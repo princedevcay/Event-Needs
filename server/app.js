@@ -12,7 +12,7 @@ const vendors = [
       {
         id: 1,
         name: 'Avalon Photography',
-        imageUrl: '../server/public/images/1.jpg',
+        imageUrl: 'https://picsum.photos/id/100/200/300',
         rating: 5,
         reviewCount: 43,
         location: 'Alabama and Beyond',
@@ -23,7 +23,7 @@ const vendors = [
       {
       id: 2,
       name: 'Elegant Events',
-      imageUrl: '../server/public/images/1.jpg',
+      imageUrl: 'https://picsum.photos/id/101/200/300',
       rating: 4.8,
       reviewCount: 30,
       location: 'New York, NY',
@@ -33,7 +33,7 @@ const vendors = [
     {
       id: 3,
       name: 'Blooms and Blossoms',
-      imageUrl: '../server/public/images/1.jpg',
+      imageUrl: 'https://picsum.photos/id/102/200/300',
       rating: 4.6,
       reviewCount: 21,
       location: 'San Francisco, CA',
