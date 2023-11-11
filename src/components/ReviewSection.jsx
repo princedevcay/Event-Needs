@@ -25,7 +25,7 @@ const ReviewSection = () => {
 
   useEffect(() => {
     // Fetch reviews from the server
-    fetch('/api/reviews')
+    fetch('https://event-needs-backend.onrender.com/api/reviews')
       .then((response) => response.json())
       .then((data) => {
         setReviews(data);

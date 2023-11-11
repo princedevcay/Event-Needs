@@ -16,7 +16,7 @@ const Vendors = () => {
     const fetchVendors = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/api/vendors');
+        const response = await axios.get('https://event-needs-backend.onrender.com/api/vendors');
         setVendors(response.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
