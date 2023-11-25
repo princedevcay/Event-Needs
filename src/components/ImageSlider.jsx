@@ -4,6 +4,7 @@ import image1 from '../assets/01.jpg';
 import image2 from '../assets/02.jpg'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import SearchVendors from './SearchVendors';
 
 
 const sliderData = [
@@ -12,16 +13,6 @@ const sliderData = [
     text: 'Image 1 Text',
     buttonText: 'Button Text 1',
   },
-  {
-    image: image1,
-    text: 'Image 2 Text',
-    buttonText: 'Button Text 2',
-  },
-  {
-    image: image1,
-    text: 'Image 3 Text',
-    buttonText: 'Button Text 3',
-  }
 ];
 
 const ImageSlider = () => {
@@ -54,12 +45,12 @@ const ImageSlider = () => {
                 textAlign="center"
               >
                 <Heading as="h1" size="2xl" color="white">
-                  Welcome to EventNeeds
+                Find the best African wedding & event vendors
                 </Heading>
                 <Text fontSize="xl" color="white">
                   Your one-stop platform for all event planning services.
                 </Text>
-                <Button colorScheme="brown">{slide.buttonText}</Button>
+                <SearchVendors/>
               </VStack>
             </Center>
           </Box>
