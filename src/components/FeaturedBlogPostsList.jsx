@@ -1,6 +1,8 @@
-import { Box, Text, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Text, Heading, SimpleGrid, Container } from '@chakra-ui/react';
 import BlogPost from '../components/BlogPost'; 
-import blogImage from '../assets/blog-sample.jpg'; 
+import blogImage from '../assets/photography.webp'; 
+import blogImage2 from '../assets/venues.jpg'; 
+import blogImage3 from '../assets/Enjoyment.webp'; 
 
 function FeaturedBlogPostsList() {
   // Mock data for blog posts
@@ -15,27 +17,22 @@ function FeaturedBlogPostsList() {
     {
       title: "Choosing the Perfect Venue",
       subtitle: "Venue Selection",
-      imageSrc: blogImage,
+      imageSrc: blogImage2,
       excerpt: "Your guide to selecting the ideal venue for any event. Discover what to look for, questions to ask, and how to know when you've found 'the one'...",
       readMoreUrl: "/event-venue"
     },
     {
       title: "Creating Unforgettable Moments",
       subtitle: "Event Planning",
-      imageSrc: blogImage,
+      imageSrc: blogImage3,
       excerpt: "Learn how to create an unforgettable experience for your event attendees...",
       readMoreUrl: "/event-planning"
     },
-    {
-      title: "The Latest Trends in Event Decor",
-      subtitle: "Event Design",
-      imageSrc: blogImage,
-      excerpt: "Stay ahead of the curve with these innovative event decor trends...",
-      readMoreUrl: "/event-decor"
-    }
+   
   ];
 
   return (
+    <Container maxW="container.xl"  borderRadius={"xl"}>
     <Box>
       <Heading as="h2" size="xl" textAlign="center" mb={4}>
         Featured Blog Posts
@@ -43,7 +40,7 @@ function FeaturedBlogPostsList() {
       <Text textAlign="center" mb={6} fontFamily="body">
         Explore our curated articles
       </Text>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10} mx={12} mb={10}>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}  mb={10}>
         {blogPosts.map((post, index) => (
           <BlogPost
             key={index}
@@ -55,7 +52,8 @@ function FeaturedBlogPostsList() {
           />
         ))}
       </SimpleGrid>
-    </Box>
+      </Box>
+      </Container>
   );
 }
 

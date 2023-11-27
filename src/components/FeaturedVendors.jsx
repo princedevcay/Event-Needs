@@ -1,4 +1,4 @@
-import { Box, Image, Text, Heading } from '@chakra-ui/react';
+import { Box, Image, Text, Heading, Container } from '@chakra-ui/react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -24,6 +24,7 @@ function FeaturedVendors() {
 
   return (
     <Box py={10} bg="brown.50">
+      <Container maxW="container.xl"  borderRadius={"xl"}>
       <Heading as="h2" size="xl" textAlign="center" fontFamily="heading" color="brown.800">
         Featured Vendors
       </Heading>
@@ -39,6 +40,7 @@ function FeaturedVendors() {
           ))}
         </Slider>
       </Box>
+      </Container>
     </Box>
   );
 }

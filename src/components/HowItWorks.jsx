@@ -1,4 +1,4 @@
-import { Box, Heading, SimpleGrid, Text, VStack, Circle } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid, Text, VStack, Circle, Container } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 const MotionVStack = motion(VStack);
@@ -20,13 +20,14 @@ const HowItWorks = () => {
 
   return (
     <Box>
+      <Container maxW="container.xl"  borderRadius={"xl"}>
       <Heading as="h2" size="xl" textAlign="center" mb={4}>
         How It Works
       </Heading>
       <Text textAlign="center" mt={2} mb={6} fontFamily="body">
         Our streamlined process ensures you can focus on what you do best — delivering outstanding services.
       </Text>
-      <SimpleGrid columns={[1, null, 3, 5]} spacing={10} px={[4, null, 12]} py={10}>
+      <SimpleGrid columns={[1, null, 3, 5]} spacing={10} px={[4, null, 1]} py={10}>
         {steps.map((step) => (
           <MotionVStack
             key={step.id}
@@ -48,13 +49,14 @@ const HowItWorks = () => {
             }}
           >
             <Circle size="40px" bg="brown.500" color="white">
-              <Text fontSize="xl" fontWeight="bold">{step.id}</Text>
+              <Text fontSize="xl" fontWeight="bold" textAlign={"center"}>{step.id}</Text>
             </Circle>
-            <Heading as="h4" size="md">{step.title}</Heading>
-            <Text>{step.description}</Text>
+            <Heading as="h4" size="md" textAlign={"center"}>{step.title}</Heading>
+            <Text textAlign={"center"}>{step.description}</Text>
           </MotionVStack>
         ))}
       </SimpleGrid>
+      </Container>
     </Box>
   );
 };

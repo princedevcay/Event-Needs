@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Button, Center } from '@chakra-ui/react';
+import { Box, Heading, Text, Button, Center, Container } from '@chakra-ui/react';
 import FeaturedVendor from './FeaturedVendor';
 import { motion } from 'framer-motion';
 import Slider from 'react-slick';
@@ -48,6 +48,7 @@ function FeaturedVendorsList() {
 
   return (
     <MotionBox initial="hidden" animate="visible" py={10} bg="brown.50">
+      <Container maxW="container.xl"  borderRadius={"xl"}>
       <Heading as="h2" size="xl" textAlign="center" mb={4}>
         Featured Vendors
       </Heading>
@@ -70,6 +71,7 @@ function FeaturedVendorsList() {
           Browse more Vendors
         </Button>
       </Center>
+      </Container>
     </MotionBox>
   );
 }

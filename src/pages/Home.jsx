@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import HowItWorks from '../components/HowItWorks';
 import FeaturedVendorsList from '../components/FeaturedVendorsList';
 import FeaturedBlogPostsList from '../components/FeaturedBlogPostsList';
+import VendorSignUp from '../components/VendorSignUp';
 import Footer from '../components/Footer';
 
 const containerVariants = {
@@ -56,6 +57,9 @@ const Home = () => {
           <motion.div variants={itemVariants}>
             <FeaturedVendorsList />
           </motion.div>
+          <motion.div variants={itemVariants}>
+            <VendorSignUp/>
+            </motion.div>
           <motion.div variants={itemVariants}>
             <FeaturedBlogPostsList />
           </motion.div>
