@@ -1,10 +1,15 @@
 /* eslint-disable no-undef */
 const express = require('express');
-const app = express();
 const path = require('path');
+const userRoutes = require('./routes/userRoutes');
+
+const app = express();
 
 /// Serve static files from "public/images" directory
 app.use('/public/images', express.static(path.join(__dirname, 'public', 'images')));
+
+// Middleware for parsing JSON bodies
+app.use(express.json());
 
 
 // Mock data array
@@ -152,6 +157,9 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   next();
 });
+
+// User Routes
+app.use('/api/users', userRoutes);
 
 // Endpoint to get vendors
 app.get('/api/vendors', (req, res) => {

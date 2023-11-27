@@ -6,6 +6,9 @@ import VendorPage from './pages/VendorPage';
 import About from './pages/About';
 import Login from './components/Login';
 import Vendors from './components/Vendors';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import Profile from './components/user/Profile';
 
 const customTheme = extendTheme({
   styles: {
@@ -49,17 +52,21 @@ const customTheme = extendTheme({
 
 function App() {
   return (
-    <ChakraProvider theme={customTheme}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-          <Route path='/vendors' element={<Vendors />} />
-          <Route path='/vendors/vendor' element={<VendorPage />} />
-        </Routes>
-      </Router>
-    </ChakraProvider>
+    <Provider store={store}> {/* Wrap the entire application with Redux Provider */}
+      <ChakraProvider theme={customTheme}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/vendors" element={<Vendors />} />
+            <Route path="/vendors/vendor" element={<VendorPage />} />
+            <Route path="/vendor/profile" element={<Profile />} />
+            {/* Other routes as needed */}
+          </Routes>
+        </Router>
+      </ChakraProvider>
+    </Provider>
   );
 }
 
