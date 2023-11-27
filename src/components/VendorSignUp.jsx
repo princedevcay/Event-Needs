@@ -4,6 +4,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import qs from 'qs'; // qs library is used to format the data
 
 
 const VendorSignUp = () => {
@@ -24,11 +25,18 @@ const VendorSignUp = () => {
     };
   
     const handleSubmit = async (e) => {
-      e.preventDefault(); // Prevents default form submission behavior
-    
+      e.preventDefault();
       try {
-        const response = await axios.post('/email.php', formData);
-        console.log('Response:', response.data); // Logs only the response data
+        // Format the data as URL-encoded string
+        const formattedData = qs.stringify(formData);
+    
+        const response = await axios({
+          method: 'post',
+          url: '/email.php',
+          data: formattedData,
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        });
+        console.log('Response:', response.data);
         setStep(4); // Move to the thank you step
       } catch (error) {
         console.error('Error submitting form:', error);
