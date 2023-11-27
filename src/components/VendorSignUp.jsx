@@ -24,15 +24,17 @@ const VendorSignUp = () => {
     };
   
     const handleSubmit = async (e) => {
-      e.preventDefault();
+      e.preventDefault(); // Prevents default form submission behavior
+    
       try {
         const response = await axios.post('/email.php', formData);
-        console.log(response.data);
-        setStep(4); // Proceed to thank you step
+        console.log('Response:', response.data); // Logs only the response data
+        setStep(4); // Move to the thank you step
       } catch (error) {
         console.error('Error submitting form:', error);
       }
     };
+    
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
@@ -87,19 +89,19 @@ const VendorSignUp = () => {
                   </FormControl>
                   <FormControl id="contact-person">
                     <FormLabel>Contact Person</FormLabel>
-                    <Input name='contactPerson' bg="white.50" type="text" onChange={handleInputChange} />
+                    <Input name="contactPerson" bg="white.50" type="text" onChange={handleInputChange} />
                   </FormControl>
                   <FormControl id="vendor-email">
                     <FormLabel>Email Address</FormLabel>
-                    <Input name='email' bg="white.50" type="email" onChange={handleInputChange} />
+                    <Input name="email" bg="white.50" type="email" onChange={handleInputChange} />
                   </FormControl>
                   <FormControl id="vendor-phone">
                     <FormLabel>Phone</FormLabel>
-                    <Input name='phone' bg="white.50" type="text" onChange={handleInputChange} />
+                    <Input name="phone" bg="white.50" type="text" onChange={handleInputChange} />
                   </FormControl>
                   <FormControl id="vendor-website">
                     <FormLabel>Website</FormLabel>
-                    <Input name='website' bg="white.50" type="text" onChange={handleInputChange} />
+                    <Input name="website" bg="white.50" type="text" onChange={handleInputChange} />
                   </FormControl>
                   {/* Additional fields as needed */}
                 </>
@@ -111,7 +113,7 @@ const VendorSignUp = () => {
                   <Heading size="md">Services Offered (Primary Service)</Heading>
                   <FormControl id="vendor-service">
                     <FormLabel>Service Category</FormLabel>
-                    <Input name='serviceCategory' bg="white.50" type="text" onChange={handleInputChange} />
+                    <Input name="serviceCategory" bg="white.50" type="text" onChange={handleInputChange} />
                   </FormControl>
                   {/* Additional fields as needed */}
                 </>
