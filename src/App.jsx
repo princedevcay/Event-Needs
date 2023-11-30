@@ -1,14 +1,17 @@
 import './App.css';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { Provider } from 'react-redux';
+import store, { persistor } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import VendorPage from './pages/VendorPage';
 import About from './pages/About';
 import Login from './components/Login';
 import Vendors from './components/Vendors';
-import { Provider } from 'react-redux';
-import store from './redux/store';
-import Profile from './components/user/Profile';
+import UserProfile from './components/user/UserProfile';
+import UserList from './components/user/UserList'; // Adjust the path as necessary
+
 
 const customTheme = extendTheme({
   styles: {
@@ -53,6 +56,7 @@ const customTheme = extendTheme({
 function App() {
   return (
     <Provider store={store}> {/* Wrap the entire application with Redux Provider */}
+     <PersistGate loading={null} persistor={persistor}>
       <ChakraProvider theme={customTheme}>
         <Router>
           <Routes>
@@ -60,12 +64,14 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/vendors" element={<Vendors />} />
+            <Route path="/users" element={<UserList/>} />
             <Route path="/vendors/vendor" element={<VendorPage />} />
-            <Route path="/vendor/profile" element={<Profile />} />
+            <Route path="/profile" element={<UserProfile />} />
             {/* Other routes as needed */}
           </Routes>
         </Router>
       </ChakraProvider>
+      </PersistGate>
     </Provider>
   );
 }

@@ -1,5 +1,9 @@
 import { Fragment, useState } from "react";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { SET_USER } from '../redux/types'; // Adjust the path based on your file structure
+
 import {
   Flex,
   Box,
@@ -13,14 +17,20 @@ import {
   useColorMode,
   Icon,
   Heading,
-  useTheme
+  useTheme,
+  Text
 } from "@chakra-ui/react";
 
 
 const Login = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const theme = useTheme();
-
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState([]);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [tabIndex, setTabIndex] = useState(0); // 0 for login, 1 for register
+  const dispatch = useDispatch();
+  
 
   // State for the login and registration forms
   const [loginForm, setLoginForm] = useState({
@@ -29,10 +39,9 @@ const Login = () => {
   });
 
   const [registerForm, setRegisterForm] = useState({
-    username: '',
-    password: '',
+    name: '',
     email: '',
-    fullName: '',
+    password: '',
   });
 
   // Update form state for login
@@ -48,54 +57,67 @@ const Login = () => {
   // Handle login form submission
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post('/api/users/login', loginForm);
-      console.log(response.data);
-      // Handle login success
+      const response = await axios.post('http://localhost:3000/api/login', loginForm);
+      if (response.data) {
+        const userProfileResponse = await axios.get(`http://localhost:3000/api/user/${response.data.userId}`, {
+          headers: { Authorization: `Bearer ${response.data.token}` }
+        });
+        const userData = {
+          token: response.data.token,
+          email: response.data.email,
+          id: response.data.userId,
+          name: userProfileResponse.data.name, // Fetch name from user profile
+        };
+        dispatch({ type: SET_USER, payload: userData });
+        navigate('/profile');
+      }
     } catch (error) {
-      console.error('Login error:', error.response?.data);
-      // Handle login failure
+      if (error.response && error.response.data) {
+        setErrors(error.response.data.errors || ['Login failed']);
+        setSuccessMessage('');
+      }
     }
   };
+  
 
   // Handle register form submission
-  const handleRegisterSubmit = async () => {
-    try {
-      const response = await axios.post('/api/users/register', registerForm);
-      console.log(response.data);
-      // Handle registration success
-    } catch (error) {
-      console.error('Registration error:', error.response?.data);
-      // Handle registration failure
+const handleRegisterSubmit = async () => {
+  try {
+    const response = await axios.post('http://localhost:3000/api/register', registerForm);
+    if (response.data) {
+      setSuccessMessage('Registration successful!');
+      setErrors([]);
+      setTabIndex(0); // Switch to the login tab
     }
-  };
+  } catch (error) {
+    if (error.response && error.response.data) {
+      setErrors(error.response.data.errors || ['Registration failed']);
+      setSuccessMessage('');
+    }
+  }
+};
 
   return (
     <Fragment>
       <Flex height="100vh" align="center" justify="center">
-        <Button
-          position="absolute"
-          top="5"
-          left="5"
-          rounded="50%"
-          onClick={() => toggleColorMode()}
-        >
+        <Button position="absolute" top="5" left="5" rounded="50%" onClick={() => toggleColorMode()}>
           <Icon name={colorMode === "light" ? "moon" : "sun"} />
         </Button>
-        <Box
-          p="20px"
-          backgroundColor={colorMode === "light" ? "white" : "#313641"}
-          shadow={"xl"}
-        >
+        <Box p="20px" backgroundColor={colorMode === "light" ? "white" : "#313641"} shadow="xl">
           <Flex align="center" justify="center" direction="column">
             <Heading fontSize='2xl'>LOGIN</Heading>
-            <Tabs mt="15px">
+            <Tabs index={tabIndex} onChange={setTabIndex} mt="15px">
               <TabList color="brown.300" border="none">
-                <Tab _selected={{ color: "black.200"}} w="50%" fontFamily={theme.fonts.Heading}>Login</Tab>
-                <Tab _selected={{ color: "black.200"}} w="50%" fontFamily={theme.fonts.Heading}>Register</Tab>
+                <Tab _selected={{ color: "black.200" }} w="50%" fontFamily={theme.fonts.heading}>Login</Tab>
+                <Tab _selected={{ color: "black.200" }} w="50%" fontFamily={theme.fonts.heading}>Register</Tab>
               </TabList>
               <TabPanels mt="15px">
                 <TabPanel>
-                  <Flex align="center" justify="center" direction="column">
+                  {/* Display error and success messages */}
+                  {errors.map((error, index) => <Text key={index} color="red.500">{error.msg || error}</Text>)}
+                  {successMessage && <Text color="green.500">{successMessage}</Text>}
+                    {/* Login form fields */}
+                    <Flex align="center" justify="center" direction="column">
                     <Input
                       placeholder="Email"
                       size="lg"
@@ -124,12 +146,17 @@ const Login = () => {
                   </Flex>
                 </TabPanel>
                 <TabPanel>
+                  {/* Display error and success messages */}
+                  {errors.map((error, index) => <Text key={index} color="red.500">{error.msg || error}</Text>)}
+                  {successMessage && <Text color="green.500">{successMessage}</Text>}
+
                   <Flex align="center" justify="center" direction="column">
+                    {/* Registration form fields */}
                     <Input
-                      placeholder="Username"
+                      placeholder="Name"
                       size="lg"
-                      name="username"
-                      value={registerForm.username}
+                      name="name"
+                      value={registerForm.name}
                       onChange={handleRegisterFormChange}
                     />
                     <Input
@@ -146,14 +173,6 @@ const Login = () => {
                       type="password"
                       name="password"
                       value={registerForm.password}
-                      onChange={handleRegisterFormChange}
-                      mt="20px"
-                    />
-                    <Input
-                      placeholder="Full Name"
-                      size="lg"
-                      name="fullName"
-                      value={registerForm.fullName}
                       onChange={handleRegisterFormChange}
                       mt="20px"
                     />
