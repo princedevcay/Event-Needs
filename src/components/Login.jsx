@@ -57,9 +57,9 @@ const Login = () => {
   // Handle login form submission
   const handleLoginSubmit = async () => {
     try {
-      const response = await axios.post('https://event-needs.com/api/login', loginForm);
+      const response = await axios.post('https://event-needs-backend.onrender.com/api/login', loginForm);
       if (response.data) {
-        const userProfileResponse = await axios.get(`https://event-needs.com/api/user/${response.data.userId}`, {
+        const userProfileResponse = await axios.get(`https://event-needs-backend.onrender.com/api/user/${response.data.userId}`, {
           headers: { Authorization: `Bearer ${response.data.token}` }
         });
         const userData = {
@@ -83,7 +83,7 @@ const Login = () => {
   // Handle register form submission
 const handleRegisterSubmit = async () => {
   try {
-    const response = await axios.post('https://event-needs.com/api/register', registerForm);
+    const response = await axios.post('https://event-needs-backend.onrender.com/api/register', registerForm);
     if (response.data) {
       setSuccessMessage('Registration successful!');
       setErrors([]);
