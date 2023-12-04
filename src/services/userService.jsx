@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // src/services/userService.js
 import axios from 'axios';
-const API_URL = 'https://event-needs.com/api/users'; // Update with your actual backend URL
+const API_URL = 'https://event-needs-backend.onrender.com/api/users'; // Update with your actual backend URL
 
  // Update with your actual backend URL
 
