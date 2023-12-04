@@ -4,6 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
+const vendorRoutes = require('./routes/vendorRoutes'); // Update the path as necessary
+const vendorPackageRoutes = require('./routes/vendorPackageRoutes');
 
 
 const app = express();
@@ -29,5 +31,9 @@ app.use((error, req, res, next) => {
 
 // Routes
 app.use('/api', userRoutes);
+
+// Vendor routes
+app.use('/api', vendorRoutes);
+app.use('/api', vendorPackageRoutes);
 
 module.exports = app;

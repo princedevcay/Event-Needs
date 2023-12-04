@@ -1,7 +1,7 @@
 import './App.css';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
-import store, { persistor } from './redux/store';
+import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
@@ -9,8 +9,9 @@ import VendorPage from './pages/VendorPage';
 import About from './pages/About';
 import Login from './components/Login';
 import Vendors from './components/Vendors';
-import UserProfile from './components/user/UserProfile';
+import VendorProfile from './components/user/VendorProfile';
 import UserList from './components/user/UserList'; // Adjust the path as necessary
+import ListYourBusiness from './pages/ListYourBusiness';
 
 
 const customTheme = extendTheme({
@@ -66,7 +67,8 @@ function App() {
             <Route path="/vendors" element={<Vendors />} />
             <Route path="/users" element={<UserList/>} />
             <Route path="/vendors/vendor" element={<VendorPage />} />
-            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/vendor/:vendorId" element={<VendorProfile/>} />
+            <Route path="/list-your-business" element={<ListYourBusiness/>} />
             {/* Other routes as needed */}
           </Routes>
         </Router>

@@ -1,125 +1,158 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { FaBars } from 'react-icons/fa';
+import { CLEAR_USER } from '../redux/types';
+import logoImage from '../assets/logo.jpg';
 import {
-  Box, Flex, Button, HStack, Link, Image, IconButton, Stack,
-  Menu, MenuButton, MenuList, MenuItem, Collapse, Drawer,
-  DrawerOverlay, DrawerContent, DrawerCloseButton, useBreakpointValue, VStack
+  Box,
+  Flex,
+  Image,
+  IconButton,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  Stack,
+  Button,
+  Link as ChakraLink,
+  HStack,
+  useBreakpointValue,
+  Link
 } from '@chakra-ui/react';
-import { Link as RouterLink, useNavigate} from 'react-router-dom';
-import { FaBars, FaChevronDown, FaChevronUp, FaUserCircle  } from 'react-icons/fa';
-import logoImage from '../assets/logo.jpg'; // Ensure the correct path to your logo image
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { vendor, loading, error } = useSelector((state) => state.vendor);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [mobileSubMenuOpen, setMobileSubMenuOpen] = useState(false);
-  const isMobile = useBreakpointValue({ base: true, md: false });
 
-  // useHistory for React Router v5 or useNavigate for v6
-  const navigate = useNavigate(); // or const navigate = useNavigate() for v6
+  const handleLogout = () => {
+    dispatch({ type: CLEAR_USER });
+    navigate('/login');
+  };
 
   const toggleMobileNav = () => setMobileNavOpen(!mobileNavOpen);
-  const navigateToLogin = () => navigate('/login'); // or navigate('/login') for v6
+  const navigateToLogin = () => navigate('/login');
+  const navigateToBussinessLists = () => navigate('/list-your-business');
 
-  const toggleMobileSubMenu = () => setMobileSubMenuOpen(!mobileSubMenuOpen);
+  const isDesktop = useBreakpointValue({ base: false, md: true });
+
+  // Handle loading and error states
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <Box as="header" bg="white" px={10} shadow="md" w="full">
-      <Flex h={16} alignItems="center" justifyContent="space-between">
-        {/* Logo */}
+    <Box as="header" bg="white" px={10} py={4} shadow="md" w="full" textAlign="center" height={"80px"}>
+      <Flex h={16} alignItems="center" justifyContent="space-between" fontFamily={"heading"} fontSize="xl">
         <Box zIndex="3">
           <Link as={RouterLink} to="/">
-            <Image src={logoImage} alt="Event Needs" boxSize={{ base: '100px', md: '150px' }} borderRadius="full" />
+            <Image src={logoImage} alt="Logo" boxSize={{ base: '100px', md: '150px' }} borderRadius="full" />
           </Link>
         </Box>
 
-        {/* Menu for Desktop */}
-        {!isMobile && (
-          <HStack as="nav" spacing={4} colorScheme={"black"} fontSize={"2xl"} fontFamily="heading">
-            <Link 
-              as={RouterLink} 
-              to="/" 
-            
-              _hover={{ textDecoration: 'underline' }}>Home</Link>
-            <Link 
-              as={RouterLink} 
-              to="/vendors" 
-            
-              _hover={{ textDecoration: 'underline' }}>Vendors</Link>
-            {/* Submenu */}
-            <Menu>
-              <MenuButton  as={Button} fontSize={"2xl"} colorScheme={"black"}
-                rightIcon={<FaChevronDown />} 
-               
-                variant="ghost"
-                onMouseEnter={(event) => event.currentTarget.click()}>
-                Vendor Categories
-              </MenuButton>
-              <MenuList>
-                <MenuItem as={RouterLink} to="/vendors/vendor">Photography</MenuItem>
-                <MenuItem as={RouterLink} to="/vendors/vendor">Wedding</MenuItem>
-              </MenuList>
-            </Menu>
-            <Link as={RouterLink} to="/events">Events</Link>
+        {/* Mobile Navigation Icon */}
+        <IconButton
+          icon={<FaBars />}
+          aria-label="Open menu"
+          onClick={toggleMobileNav}
+          colorScheme="brown"
+          display={{ base: 'inline-flex', md: 'none' }}
+        />
+
+        {/* Mobile Navigation Drawer */}
+        <Drawer isOpen={mobileNavOpen} placement="right" onClose={toggleMobileNav}>
+          <DrawerOverlay />
+          <DrawerContent fontFamily={"heading"} fontSize={"xl"} textTransform="Uppercase" fontWeight="bold">
+            <DrawerCloseButton />
+            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerBody>
+              <Stack spacing={4}>
+                <ChakraLink as={RouterLink} to="/" onClick={toggleMobileNav}>
+                  Home
+                </ChakraLink>
+                <ChakraLink as={RouterLink} to="/vendors" onClick={toggleMobileNav}>
+                  Vendors
+                </ChakraLink>
+                {/* Add more mobile menu items */}
+                {!vendor  ? (
+                  <>
+                    <Button width="full"
+                      onClick={navigateToLogin}
+                      fontFamily="heading"
+                      colorScheme="brown"
+                      fontSize="4xl">
+                    </Button>
+                    <Button width="full" onClick={navigateToLogin} 
+                    fontFamily="heading"
+                    variant="outline" 
+                    colorScheme="brown" 
+                    fontSize="xl">
+                      Sign In
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                  <Button onClick={navigateToLogin}
+                      fontFamily="heading"
+                      colorScheme="brown"
+                      fontSize="xl">
+                      List Your Business
+                    </Button>
+                  <Button width="full" 
+                      onClick={handleLogout} 
+                      colorScheme="red"
+                      fontFamily="heading"
+                      fontSize="xl">
+                    Logout
+                  </Button>
+                  </>
+                )}
+              </Stack>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+
+        {/* Centered Desktop Menu */}
+        {isDesktop && (
+          <HStack spacing={6} justify="center" flex="1" textTransform="uppercase" fontWeight="bold">
+            <ChakraLink as={RouterLink} to="/" _hover={{ textDecoration: 'underline'}}>
+              Home
+            </ChakraLink>
+            <ChakraLink as={RouterLink} to="/vendors" _hover={{ textDecoration: 'underline' }} >
+              Vendors
+            </ChakraLink>
+            {/* Add more menu items */}
           </HStack>
         )}
 
-        {/* Buttons */}
-        <Stack direction="row" 
-          spacing={4}
-          display={{ base: 'none', md: 'inline-flex' }}>
-          <Button as={RouterLink} to="/login" colorScheme="brown">List Your Business</Button>
-          <Button as={RouterLink} variant="outline" to="/login" colorScheme="brown">Sign In</Button>
-        </Stack>
-
-        {/* Mobile Menu Icon */}
-        {isMobile && (
-          <Stack direction="row" spacing={10}>
-          <IconButton
-            icon={<FaUserCircle />}
-            colorScheme={"brown"}
-            aria-label="Account"
-            variant="outline"
-            onClick={navigateToLogin}
-          />
-          <IconButton
-            icon={<FaBars />}
-            aria-label="Open menu"
-            onClick={toggleMobileNav}
-            colorScheme={"brown"}
-          />
-        </Stack>
+        {/* Buttons for Desktop */}
+        {isDesktop && (
+          <Stack direction="row" spacing={4} display={{ base: 'none', md: 'inline-flex' }}>
+            {!vendor  ? (
+              <>
+                <Button onClick={navigateToBussinessLists} colorScheme="brown" fontSize="xl">
+                  List Your Business
+                </Button>
+                <Button onClick={navigateToLogin} variant="outline" colorScheme="brown" fontSize="xl">
+                  Sign In
+                </Button>
+              </>
+            ) : (
+              <>
+              <Button onClick={navigateToBussinessLists} colorScheme="brown" fontSize="xl">
+                  List Your Business
+                </Button>
+              <Button onClick={handleLogout} colorScheme="red" fontSize="xl">
+                Logout
+              </Button>
+              </>
+            )}
+          </Stack>
         )}
       </Flex>
-
-      {/* Mobile Navigation Drawer */}
-      <Drawer isOpen={mobileNavOpen} placement="right" onClose={toggleMobileNav}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <Box p={4}>
-            <Stack as="nav" spacing={4}>
-              <Link as={RouterLink} to="/" onClick={toggleMobileNav}>Home</Link>
-              <Link as={RouterLink} to="/vendors" onClick={toggleMobileNav}>Vendors</Link>
-              <Button width="full" justifyContent="space-between" rightIcon={mobileSubMenuOpen ? <FaChevronUp /> : <FaChevronDown />} onClick={toggleMobileSubMenu}>
-               Vendor Categories
-              </Button>
-              <Collapse in={mobileSubMenuOpen}>
-                <Stack mt={2}>
-                  <Link as={RouterLink} to="/vendors/vendor" onClick={toggleMobileNav}>Photography</Link>
-                  <Link as={RouterLink} to="/vendors/vendor" onClick={toggleMobileNav}>Wedding</Link>
-                  {/* More categories */}
-                </Stack>
-              </Collapse>
-              <Link as={RouterLink} to="/events" onClick={toggleMobileNav}>Events</Link>
-              {/* Buttons */}
-        <VStack direction="row" spacing={4}>
-          <Button as={RouterLink} to="/login" colorScheme="brown">List Your Business</Button>
-          <Button as={RouterLink} variant="outline" to="/login" colorScheme="brown">Sign In</Button>
-        </VStack>
-            </Stack>
-            
-          </Box>
-        </DrawerContent>
-      </Drawer>
     </Box>
   );
 };

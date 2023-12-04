@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const User = require('../models/User');
+const VendorPackage = require('../models/VendorPackage')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
@@ -107,5 +108,31 @@ exports.getUsers = async (req, res) => {
   } catch (error) {
     console.error("Error fetching users:", error); // This will log any errors encountered
     res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getUserProfile = async (req, res) => {
+  try {
+    // Assuming the user's ID is available via authentication middleware
+    const user = await User.findById(req.user.id); 
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Now, get the list of vendor packages
+    const vendorPackages = await VendorPackage.find();
+
+    // Send back user data and vendor packages
+    res.status(200).json({
+      userProfile: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        // Include any other user profile information you want to send back
+      },
+      vendorPackages // This will be an array of vendor packages
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user profile: ' + error.message });
   }
 };
