@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import VendorPage from './pages/VendorPage';
 import About from './pages/About';
 import Login from './components/Login';
+import RegistrationProcess from './components/RegistrationProcess';
 import Vendors from './components/Vendors';
 import VendorProfile from './components/user/VendorProfile';
 import UserList from './components/user/UserList'; // Adjust the path as necessary
@@ -64,6 +65,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<RegistrationProcess />} />
             <Route path="/vendors" element={<Vendors />} />
             <Route path="/users" element={<UserList/>} />
             <Route path="/vendors/vendor" element={<VendorPage />} />
