@@ -14,8 +14,6 @@ router.post('/users',
 );
 router.get('/users', userController.getUsers);
 
-router.get('/profile', protect, userController.getUserProfile);
-
 router.get('/user/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;

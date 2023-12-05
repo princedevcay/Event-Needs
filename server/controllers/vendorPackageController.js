@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // controllers/vendorPackageController.js
 const VendorPackage = require('../models/VendorPackage'); // Adjust the path as necessary
 
@@ -14,11 +15,11 @@ exports.getAllVendorPackages = async (req, res) => {
 // Get a single vendor package
 exports.getVendorPackage = async (req, res) => {
   try {
-    const package = await VendorPackage.findById(req.params.id);
-    if (!package) {
+    const vendorpackage = await VendorPackage.findById(req.params.id);
+    if (!vendorpackage) {
       return res.status(404).send({ message: 'Vendor package not found' });
     }
-    res.json(package);
+    res.json(vendorpackage);
   } catch (error) {
     res.status(500).send({ message: 'Error fetching vendor package' });
   }
@@ -55,8 +56,8 @@ exports.updateVendorPackage = async (req, res) => {
 // Delete a vendor package
 exports.deleteVendorPackage = async (req, res) => {
   try {
-    const package = await VendorPackage.findByIdAndDelete(req.params.id);
-    if (!package) {
+    const vendorpackage = await VendorPackage.findByIdAndDelete(req.params.id);
+    if (!vendorpackage) {
       return res.status(404).send({ message: 'Vendor package not found' });
     }
     res.status(204).send();
